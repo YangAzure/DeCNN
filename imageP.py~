@@ -1,0 +1,21 @@
+from PIL import Image
+import glob
+from resizeimage import resizeimage
+import os
+
+k=0
+image_list = []
+for d in os.walk('101_ObjectCategories/')[1]:
+    print d
+    for filename in glob.glob('101_ObjectCategories/'+d+'/*.jpg'): #assuming gif
+        im=Image.open(filename)
+        dirname = os.path.basename(os.path.dirname(filename))
+        if im.mode == 'RGB':
+            image_list.append(im)
+            img = resizeimage.resize_cover(im, [227, 227])
+            try:
+                img.save('testImg/'+dirname+'/'+str(k)+'.jpeg', img.format)
+            except:
+                os.makedirs('testImg/'+dirname)
+                img.save('testImg/'+dirname+'/'+str(k)+'.jpeg', img.format)
+            k=k+1
